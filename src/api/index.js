@@ -1,34 +1,22 @@
 import axios from 'axios'
 
-// Use environment variable for backend URL (set in Render: VITE_API_URL)
-const BACKEND_URL = import.meta.env.VITE_API_URL || 'https://mistress-bedford-terrain-williams.trycloudflare.com'
+// Cloudflare tunnel strips ALL headers (Authorization, X-Auth-Token) on GET requests.
+// Fix: append token as ?token= query param on every request.
+// Backend reads it in before_request and injects as Authorization.
+
+const BACKEND_URL = import.meta.env.VITE_API_URL ||
+  'https://mistress-bedford-terrain-williams.trycloudflare.com'
 
 // ─── Token helpers ────────────────────────────────────────────────────────────
 export function setTokens(access, refresh) {
   localStorage.setItem('access_token', access)
   localStorage.setItem('refresh_token', refresh)
-  // Also set on axios defaults for global axios (used in refresh)
-  axios.defaults.headers.common['Authorization'] = `Bearer ${access}`
-  axios.defaults.headers.common['X-Auth-Token'] = access
 }
 
 export function clearTokens() {
   localStorage.removeItem('access_token')
   localStorage.removeItem('refresh_token')
-  delete axios.defaults.headers.common['Authorization']
-  delete axios.defaults.headers.common['X-Auth-Token']
 }
-
-export function loadStoredToken() {
-  const token = localStorage.getItem('access_token')
-  if (token) {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-    axios.defaults.headers.common['X-Auth-Token'] = token
-  }
-}
-
-// Load token immediately on app start
-loadStoredToken()
 
 // ─── Axios instance ───────────────────────────────────────────────────────────
 const api = axios.create({
@@ -36,15 +24,16 @@ const api = axios.create({
   headers: { 'Content-Type': 'application/json' },
 })
 
-// ✅ Request interceptor to attach token from localStorage
+// ─── Request interceptor ──────────────────────────────────────────────────────
+// Append token as query param on EVERY request (Cloudflare-proof)
 api.interceptors.request.use(config => {
   const token = localStorage.getItem('access_token')
   if (token) {
-    config.headers.Authorization = `Bearer ${token}`
-    config.headers['X-Auth-Token'] = token
+    // Also try standard header (works on POST/DELETE where CF doesn't strip)
+    config.headers['Authorization'] = `Bearer ${token}`
+    // Query param fallback — survives Cloudflare header stripping on GET
+    config.params = { ...config.params, token }
   }
-  // Log request for debugging (remove in production)
-  console.log(`[API] ${config.method.toUpperCase()} ${config.baseURL}${config.url}`, config.headers)
   return config
 })
 
@@ -58,18 +47,20 @@ api.interceptors.response.use(
       const refresh = localStorage.getItem('refresh_token')
       if (refresh) {
         try {
-          console.log('[API] Refreshing token...')
           const { data } = await axios.post(
             `${BACKEND_URL}/api/v1/auth/refresh`,
             {},
-            { headers: { Authorization: `Bearer ${refresh}`, 'X-Auth-Token': refresh } }
+            {
+              headers: { 'Authorization': `Bearer ${refresh}` },
+              params: { token: refresh },
+            }
           )
           setTokens(data.access_token, refresh)
-          original.headers.Authorization = `Bearer ${data.access_token}`
-          original.headers['X-Auth-Token'] = data.access_token
+          // Retry original request with new token in params
+          original.params = { ...original.params, token: data.access_token }
+          original.headers['Authorization'] = `Bearer ${data.access_token}`
           return api(original)
-        } catch (refreshErr) {
-          console.error('[API] Refresh failed', refreshErr)
+        } catch {
           clearTokens()
           window.location.href = '/login'
         }
