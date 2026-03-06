@@ -33,7 +33,17 @@ loadStoredToken()
 const api = axios.create({
   baseURL: `${BACKEND_URL}/api/v1`,
   headers: { 'Content-Type': 'application/json' },
-})
+});
+
+// ✅ Request interceptor to attach token from localStorage
+api.interceptors.request.use(config => {
+  const token = localStorage.getItem('access_token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+    config.headers['X-Auth-Token'] = token; // if your backend expects this
+  }
+  return config;
+});
 
 // ─── Response interceptor — auto refresh on 401 ──────────────────────────────
 api.interceptors.response.use(
