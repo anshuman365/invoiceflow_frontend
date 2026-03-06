@@ -32,7 +32,7 @@ loadStoredToken()
 
 // ─── Axios instance ───────────────────────────────────────────────────────────
 const api = axios.create({
-  baseURL: `/api/v1`,
+  baseURL: `${BACKEND_URL}/api/v1`,
   headers: { 'Content-Type': 'application/json' },
 })
 
