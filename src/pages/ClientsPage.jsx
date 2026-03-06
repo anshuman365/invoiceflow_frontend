@@ -77,7 +77,7 @@ export default function ClientsPage() {
       ) : clients.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 text-center">
           <Users size={40} className="text-ink-700 mb-4" />
-          <p className="text-ink-300 font-600">No clients yet</p>
+          <p className="text-ink-300 font-semibold">No clients yet</p>
           <p className="text-ink-500 text-sm mt-1">Add your first client to start invoicing</p>
           <button onClick={() => setShowModal(true)} className="btn-primary mt-4">Add Client</button>
         </div>
@@ -95,7 +95,7 @@ export default function ClientsPage() {
                     }
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="font-600 text-white truncate">{client.name}</p>
+                    <p className="font-semibold text-white truncate">{client.name}</p>
                     {client.company && <p className="text-xs text-ink-400 truncate">{client.company}</p>}
                     <p className="text-xs text-ink-500 truncate mt-0.5">{client.email}</p>
                   </div>
@@ -104,15 +104,15 @@ export default function ClientsPage() {
                   <div className="grid grid-cols-3 gap-2 pt-4 border-t border-ink-800">
                     <div className="text-center">
                       <p className="text-xs text-ink-500">Invoiced</p>
-                      <p className="text-sm font-600 text-white mt-0.5">{fmtCurrency(client.stats.total_invoiced)}</p>
+                      <p className="text-sm font-semibold text-white mt-0.5">{fmtCurrency(client.stats.total_invoiced)}</p>
                     </div>
                     <div className="text-center">
                       <p className="text-xs text-ink-500">Paid</p>
-                      <p className="text-sm font-600 text-green-400 mt-0.5">{fmtCurrency(client.stats.total_paid)}</p>
+                      <p className="text-sm font-semibold text-green-400 mt-0.5">{fmtCurrency(client.stats.total_paid)}</p>
                     </div>
                     <div className="text-center">
                       <p className="text-xs text-ink-500">Due</p>
-                      <p className={`text-sm font-600 mt-0.5 ${client.stats.outstanding > 0 ? 'text-coral' : 'text-ink-400'}`}>
+                      <p className={`text-sm font-semibold mt-0.5 ${client.stats.outstanding > 0 ? 'text-coral' : 'text-ink-400'}`}>
                         {fmtCurrency(client.stats.outstanding)}
                       </p>
                     </div>

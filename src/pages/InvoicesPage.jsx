@@ -82,7 +82,7 @@ export default function InvoicesPage() {
         ) : invoices.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-center">
             <FileText size={40} className="text-ink-700 mb-4" />
-            <p className="text-ink-300 font-600">No invoices found</p>
+            <p className="text-ink-300 font-semibold">No invoices found</p>
             <p className="text-ink-500 text-sm mt-1">Create your first invoice to get started</p>
             <button onClick={() => navigate('/invoices/new')} className="btn-primary mt-4">
               Create Invoice
@@ -95,7 +95,7 @@ export default function InvoicesPage() {
                 <thead>
                   <tr className="border-b border-ink-800">
                     {['Invoice #', 'Client', 'Issue Date', 'Due Date', 'Amount', 'Status', ''].map(h => (
-                      <th key={h} className="text-left px-5 py-3.5 text-xs font-display font-600 text-ink-400 uppercase tracking-wider whitespace-nowrap">{h}</th>
+                      <th key={h} className="text-left px-5 py-3.5 text-xs font-display font-semibold text-ink-400 uppercase tracking-wider whitespace-nowrap">{h}</th>
                     ))}
                   </tr>
                 </thead>

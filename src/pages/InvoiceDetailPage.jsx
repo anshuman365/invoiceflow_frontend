@@ -167,23 +167,23 @@ export default function InvoiceDetailPage() {
           <div className="card p-6 grid grid-cols-2 gap-6">
             <div>
               <p className="label mb-2">Issue Date</p>
-              <p className="text-white font-600">{fmtDate(invoice.issue_date)}</p>
+              <p className="text-white font-semibold">{fmtDate(invoice.issue_date)}</p>
             </div>
             <div>
               <p className="label mb-2">Due Date</p>
-              <p className={`font-600 ${invoice.status === 'overdue' ? 'text-coral' : 'text-white'}`}>
+              <p className={`font-semibold ${invoice.status === 'overdue' ? 'text-coral' : 'text-white'}`}>
                 {fmtDate(invoice.due_date)}
               </p>
             </div>
             <div>
               <p className="label mb-2">Bill To</p>
-              <p className="text-white font-600">{invoice.client?.name}</p>
+              <p className="text-white font-semibold">{invoice.client?.name}</p>
               {invoice.client?.company && <p className="text-ink-400 text-sm">{invoice.client.company}</p>}
               <p className="text-ink-400 text-sm">{invoice.client?.email}</p>
             </div>
             <div>
               <p className="label mb-2">Currency</p>
-              <p className="text-white font-600">{invoice.currency}</p>
+              <p className="text-white font-semibold">{invoice.currency}</p>
             </div>
           </div>
 
@@ -193,7 +193,7 @@ export default function InvoiceDetailPage() {
               <thead>
                 <tr className="border-b border-ink-800">
                   {['Description', 'Qty', 'Rate', 'Amount'].map(h => (
-                    <th key={h} className={`px-5 py-3.5 text-xs font-display font-600 text-ink-400 uppercase tracking-wider ${h === 'Amount' ? 'text-right' : 'text-left'}`}>{h}</th>
+                    <th key={h} className={`px-5 py-3.5 text-xs font-display font-semibold text-ink-400 uppercase tracking-wider ${h === 'Amount' ? 'text-right' : 'text-left'}`}>{h}</th>
                   ))}
                 </tr>
               </thead>
@@ -237,7 +237,7 @@ export default function InvoiceDetailPage() {
                         <span>Paid</span>
                         <span className="font-mono">- {fmtCurrency(invoice.amount_paid, invoice.currency)}</span>
                       </div>
-                      <div className="flex justify-between font-600 text-white">
+                      <div className="flex justify-between font-semibold text-white">
                         <span>Balance Due</span>
                         <span className="font-mono text-coral">{fmtCurrency(invoice.amount_due, invoice.currency)}</span>
                       </div>

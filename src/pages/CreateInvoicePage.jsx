@@ -170,7 +170,7 @@ export default function CreateInvoicePage() {
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         {/* Client & Dates */}
         <div className="card p-6">
-          <h3 className="font-display font-600 text-white mb-5">Invoice Details</h3>
+          <h3 className="font-display font-semibold text-white mb-5">Invoice Details</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             <div className="sm:col-span-2 lg:col-span-1">
               <label className="label">Client *</label>
@@ -215,7 +215,7 @@ export default function CreateInvoicePage() {
         {/* Line Items */}
         <div className="card p-6">
           <div className="flex items-center justify-between mb-5">
-            <h3 className="font-display font-600 text-white">Line Items</h3>
+            <h3 className="font-display font-semibold text-white">Line Items</h3>
             <button type="button" onClick={addItem} className="btn-ghost flex items-center gap-1.5 px-3 py-1.5 text-xs">
               <Plus size={14} /> Add Item
             </button>
@@ -225,7 +225,7 @@ export default function CreateInvoicePage() {
             {/* Header */}
             <div className="hidden lg:grid grid-cols-12 gap-3 px-1">
               {['Description', 'Qty', 'Unit', 'Rate', 'Amount', ''].map((h, i) => (
-                <div key={i} className={`text-xs font-display font-600 text-ink-400 uppercase tracking-wider ${
+                <div key={i} className={`text-xs font-display font-semibold text-ink-400 uppercase tracking-wider ${
                   i === 0 ? 'col-span-5' : i === 4 ? 'col-span-2 text-right' : i === 5 ? 'col-span-1' : 'col-span-1'
                 }`}>{h}</div>
               ))}

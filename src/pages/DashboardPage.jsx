@@ -80,7 +80,7 @@ export default function DashboardPage() {
       <div className="flex gap-1 bg-ink-900 rounded-xl p-1 w-fit mb-8">
         {PERIODS.map(({ key, label }) => (
           <button key={key} onClick={() => setPeriod(key)}
-            className={`px-4 py-1.5 rounded-lg text-sm font-600 transition-all duration-200 ${
+            className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
               period === key ? 'bg-ink-700 text-white' : 'text-ink-400 hover:text-ink-200'
             }`}>
             {label}
@@ -142,7 +142,7 @@ export default function DashboardPage() {
               count > 0 && (
                 <div key={status} className="flex items-center justify-between">
                   <StatusBadge status={status} />
-                  <span className="font-mono text-sm font-600 text-white">{count}</span>
+                  <span className="font-mono text-sm font-semibold text-white">{count}</span>
                 </div>
               )
             ))}
@@ -173,7 +173,7 @@ export default function DashboardPage() {
               <thead>
                 <tr className="border-b border-ink-800">
                   {['Invoice', 'Client', 'Amount', 'Due', 'Status'].map(h => (
-                    <th key={h} className="text-left px-6 py-3 text-xs font-display font-600 text-ink-400 uppercase tracking-wider">{h}</th>
+                    <th key={h} className="text-left px-6 py-3 text-xs font-display font-semibold text-ink-400 uppercase tracking-wider">{h}</th>
                   ))}
                 </tr>
               </thead>
@@ -182,7 +182,7 @@ export default function DashboardPage() {
                   <tr key={inv.id} className="table-row cursor-pointer" onClick={() => navigate(`/invoices/${inv.id}`)}>
                     <td className="px-6 py-4 font-mono text-sm text-acid">{inv.invoice_number}</td>
                     <td className="px-6 py-4 text-sm text-white">{inv.client?.name}</td>
-                    <td className="px-6 py-4 text-sm font-600 text-white">{fmtCurrency(inv.total)}</td>
+                    <td className="px-6 py-4 text-sm font-semibold text-white">{fmtCurrency(inv.total)}</td>
                     <td className="px-6 py-4 text-sm text-ink-300">{fmtDate(inv.due_date)}</td>
                     <td className="px-6 py-4"><StatusBadge status={inv.status} /></td>
                   </tr>

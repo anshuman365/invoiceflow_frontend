@@ -136,7 +136,7 @@ export default function ClientDetailPage() {
         <div className="lg:col-span-2">
           <div className="card overflow-hidden">
             <div className="p-5 border-b border-ink-800">
-              <h3 className="font-display font-600 text-white">
+              <h3 className="font-display font-semibold text-white">
                 Invoices <span className="text-ink-400 font-mono text-sm">({invoices.length})</span>
               </h3>
             </div>
@@ -151,7 +151,7 @@ export default function ClientDetailPage() {
                 <thead>
                   <tr className="border-b border-ink-800">
                     {['Invoice #', 'Date', 'Amount', 'Status'].map(h => (
-                      <th key={h} className="text-left px-5 py-3 text-xs font-display font-600 text-ink-400 uppercase tracking-wider">{h}</th>
+                      <th key={h} className="text-left px-5 py-3 text-xs font-display font-semibold text-ink-400 uppercase tracking-wider">{h}</th>
                     ))}
                   </tr>
                 </thead>
@@ -160,7 +160,7 @@ export default function ClientDetailPage() {
                     <tr key={inv.id} className="table-row cursor-pointer" onClick={() => navigate(`/invoices/${inv.id}`)}>
                       <td className="px-5 py-3.5 font-mono text-sm text-acid">{inv.invoice_number}</td>
                       <td className="px-5 py-3.5 text-sm text-ink-300">{fmtDate(inv.issue_date)}</td>
-                      <td className="px-5 py-3.5 text-sm font-600 text-white">{fmtCurrency(inv.total)}</td>
+                      <td className="px-5 py-3.5 text-sm font-semibold text-white">{fmtCurrency(inv.total)}</td>
                       <td className="px-5 py-3.5"><StatusBadge status={inv.status} /></td>
                     </tr>
                   ))}

@@ -18,7 +18,8 @@ export default function RegisterPage() {
     try {
       await register(form)
       toast.success('Account created!')
-      navigate('/dashboard')
+      // Small delay to ensure token is stored before navigation triggers API calls
+      setTimeout(() => navigate('/dashboard', { replace: true }), 50)
     } catch (err) {
       toast.error(err.response?.data?.message || 'Registration failed')
     } finally {
@@ -37,10 +38,8 @@ export default function RegisterPage() {
           </div>
           <span className="font-display font-extrabold text-white text-lg">InvoiceFlow</span>
         </div>
-
         <h2 className="font-display font-extrabold text-3xl text-white mb-2">Create account</h2>
-        <p className="text-ink-400 mb-8">Start invoicing in minutes. Free to get started.</p>
-
+        <p className="text-ink-400 mb-8">Start invoicing in minutes.</p>
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
           <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2 sm:col-span-1">
@@ -52,12 +51,10 @@ export default function RegisterPage() {
               <input className="input" type="text" placeholder="Sharma Studio" value={form.business_name} onChange={set('business_name')} />
             </div>
           </div>
-
           <div>
             <label className="label">Email *</label>
             <input className="input" type="email" placeholder="you@example.com" value={form.email} onChange={set('email')} required />
           </div>
-
           <div>
             <label className="label">Password *</label>
             <div className="relative">
@@ -69,16 +66,13 @@ export default function RegisterPage() {
               </button>
             </div>
           </div>
-
           <button type="submit" disabled={loading}
             className="btn-primary flex items-center justify-center gap-2 mt-2">
             {loading
               ? <div className="w-4 h-4 border-2 border-ink-900 border-t-transparent rounded-full animate-spin" />
-              : <> Create Account <ArrowRight size={16} /> </>
-            }
+              : <> Create Account <ArrowRight size={16} /> </>}
           </button>
         </form>
-
         <p className="text-ink-400 text-sm mt-6 text-center">
           Already have an account?{' '}
           <Link to="/login" className="text-acid hover:underline font-semibold">Sign in</Link>

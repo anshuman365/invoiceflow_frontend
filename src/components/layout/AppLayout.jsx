@@ -60,7 +60,7 @@ export default function AppLayout() {
             {user?.full_name?.charAt(0).toUpperCase()}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-600 text-white truncate">{user?.full_name}</p>
+            <p className="text-sm font-semibold text-white truncate">{user?.full_name}</p>
             <p className="text-xs text-ink-400 truncate">{user?.email}</p>
           </div>
         </div>
