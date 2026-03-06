@@ -7,11 +7,11 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        target: 'http://localhost:5000',
+        target: 'https://mistress-bedford-terrain-williams.trycloudflare.com',
         changeOrigin: true,
       },
       '/portal': {
-        target: 'http://localhost:5000',
+        target: 'https://mistress-bedford-terrain-williams.trycloudflare.com',
         changeOrigin: true,
       }
     }
