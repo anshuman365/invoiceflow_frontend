@@ -158,7 +158,7 @@ export default function CreateInvoicePage() {
           <ArrowLeft size={20} />
         </button>
         <div>
-          <h1 className="font-display font-800 text-2xl text-white">
+          <h1 className="font-display font-extrabold text-2xl text-white">
             {isEdit ? 'Edit Invoice' : 'New Invoice'}
           </h1>
           <p className="text-ink-400 text-sm mt-0.5">
@@ -322,7 +322,7 @@ export default function CreateInvoicePage() {
                 <span>{form.tax_name} ({form.tax_rate}%)</span>
                 <span className="font-mono">+ {fmtCurrency(taxAmt, form.currency)}</span>
               </div>
-              <div className="flex justify-between font-display font-700 text-lg text-white border-t border-ink-700 pt-3 mt-1">
+              <div className="flex justify-between font-display font-bold text-lg text-white border-t border-ink-700 pt-3 mt-1">
                 <span>Total</span>
                 <span className="text-acid font-mono">{fmtCurrency(total, form.currency)}</span>
               </div>

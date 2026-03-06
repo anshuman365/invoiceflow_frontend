@@ -54,7 +54,7 @@ export default function ClientsPage() {
     <div className="p-6 lg:p-8 max-w-7xl mx-auto animate-fade-in">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="font-display font-800 text-2xl text-white">Clients</h1>
+          <h1 className="font-display font-extrabold text-2xl text-white">Clients</h1>
           <p className="text-ink-400 text-sm mt-1">{total} client{total !== 1 ? 's' : ''}</p>
         </div>
         <button onClick={() => setShowModal(true)} className="btn-primary flex items-center gap-2 shrink-0">
@@ -91,7 +91,7 @@ export default function ClientsPage() {
                   <div className="w-10 h-10 bg-ink-700 rounded-xl flex items-center justify-center shrink-0">
                     {client.company
                       ? <Building2 size={18} className="text-acid" />
-                      : <span className="font-display font-700 text-acid text-sm">{client.name.charAt(0).toUpperCase()}</span>
+                      : <span className="font-display font-bold text-acid text-sm">{client.name.charAt(0).toUpperCase()}</span>
                     }
                   </div>
                   <div className="min-w-0 flex-1">
@@ -136,7 +136,7 @@ export default function ClientsPage() {
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4 animate-fade-in overflow-y-auto">
           <div className="card w-full max-w-2xl p-6 my-4 animate-fade-up">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="font-display font-700 text-white text-lg">Add New Client</h3>
+              <h3 className="font-display font-bold text-white text-lg">Add New Client</h3>
               <button onClick={() => setShowModal(false)} className="text-ink-400 hover:text-white p-1">
                 <X size={20} />
               </button>

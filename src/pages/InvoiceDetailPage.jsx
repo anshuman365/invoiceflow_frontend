@@ -103,7 +103,7 @@ export default function InvoiceDetailPage() {
           </button>
           <div>
             <div className="flex items-center gap-3 flex-wrap">
-              <h1 className="font-display font-800 text-2xl text-white font-mono">{invoice.invoice_number}</h1>
+              <h1 className="font-display font-extrabold text-2xl text-white font-mono">{invoice.invoice_number}</h1>
               <StatusBadge status={invoice.status} />
             </div>
             <p className="text-ink-400 text-sm mt-0.5">
@@ -227,7 +227,7 @@ export default function InvoiceDetailPage() {
                     <span>{invoice.tax_name} ({invoice.tax_rate}%)</span>
                     <span className="font-mono">+ {fmtCurrency(invoice.tax_amount, invoice.currency)}</span>
                   </div>
-                  <div className="flex justify-between font-display font-700 text-lg text-white border-t border-ink-700 pt-3">
+                  <div className="flex justify-between font-display font-bold text-lg text-white border-t border-ink-700 pt-3">
                     <span>Total</span>
                     <span className="text-acid font-mono">{fmtCurrency(invoice.total, invoice.currency)}</span>
                   </div>
@@ -276,7 +276,7 @@ export default function InvoiceDetailPage() {
               <p className="text-xs text-ink-400 mb-1">
                 {invoice.status === 'paid' ? 'Paid in Full' : 'Amount Due'}
               </p>
-              <p className={`font-display font-800 text-2xl ${invoice.status === 'paid' ? 'text-green-400' : 'text-acid'}`}>
+              <p className={`font-display font-extrabold text-2xl ${invoice.status === 'paid' ? 'text-green-400' : 'text-acid'}`}>
                 {fmtCurrency(invoice.status === 'paid' ? invoice.total : invoice.amount_due, invoice.currency)}
               </p>
               {invoice.status === 'paid' && invoice.paid_at && (
@@ -324,7 +324,7 @@ export default function InvoiceDetailPage() {
       {showPayModal && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4 animate-fade-in">
           <div className="card w-full max-w-md p-6 animate-fade-up">
-            <h3 className="font-display font-700 text-white text-lg mb-5">Record Payment</h3>
+            <h3 className="font-display font-bold text-white text-lg mb-5">Record Payment</h3>
             <div className="flex flex-col gap-4">
               <div>
                 <label className="label">Amount ({invoice.currency})</label>

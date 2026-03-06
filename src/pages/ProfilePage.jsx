@@ -57,13 +57,13 @@ export default function ProfilePage() {
 
   return (
     <div className="p-6 lg:p-8 max-w-3xl mx-auto animate-fade-in">
-      <h1 className="font-display font-800 text-2xl text-white mb-8">Settings</h1>
+      <h1 className="font-display font-extrabold text-2xl text-white mb-8">Settings</h1>
 
       {/* Tabs */}
       <div className="flex gap-1 bg-ink-900 rounded-xl p-1 w-fit mb-8">
         {TABS.map(({ key, icon: Icon, label }) => (
           <button key={key} onClick={() => setTab(key)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-600 transition-all ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
               tab === key ? 'bg-ink-700 text-white' : 'text-ink-400 hover:text-ink-200'
             }`}>
             <Icon size={14} /> {label}
@@ -73,7 +73,7 @@ export default function ProfilePage() {
 
       {tab === 'profile' && (
         <form onSubmit={handleProfileSave} className="card p-6 flex flex-col gap-5">
-          <h3 className="font-display font-600 text-white">Personal Info</h3>
+          <h3 className="font-display font-semibold text-white">Personal Info</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div>
               <label className="label">Full Name</label>
@@ -114,7 +114,7 @@ export default function ProfilePage() {
 
       {tab === 'business' && (
         <form onSubmit={handleProfileSave} className="card p-6 flex flex-col gap-5">
-          <h3 className="font-display font-600 text-white">Business Settings</h3>
+          <h3 className="font-display font-semibold text-white">Business Settings</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div>
               <label className="label">Business Name</label>
@@ -146,7 +146,7 @@ export default function ProfilePage() {
 
       {tab === 'security' && (
         <form onSubmit={handlePasswordChange} className="card p-6 flex flex-col gap-5">
-          <h3 className="font-display font-600 text-white">Change Password</h3>
+          <h3 className="font-display font-semibold text-white">Change Password</h3>
           <div className="flex flex-col gap-4">
             <div>
               <label className="label">Current Password</label>

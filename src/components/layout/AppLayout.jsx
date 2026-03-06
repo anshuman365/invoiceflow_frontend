@@ -32,7 +32,7 @@ export default function AppLayout() {
         <div className="w-8 h-8 bg-acid rounded-lg flex items-center justify-center">
           <Zap size={16} className="text-ink-950" fill="currentColor" />
         </div>
-        <span className="font-display font-800 text-white text-lg tracking-tight">InvoiceFlow</span>
+        <span className="font-display font-extrabold text-white text-lg tracking-tight">InvoiceFlow</span>
       </div>
 
       {/* Nav links */}
@@ -56,7 +56,7 @@ export default function AppLayout() {
       {/* User footer */}
       <div className="border-t border-ink-800 pt-4 mt-4">
         <div className="flex items-center gap-3 px-4 py-2 mb-1">
-          <div className="w-8 h-8 bg-ink-700 rounded-full flex items-center justify-center text-xs font-display font-700 text-acid">
+          <div className="w-8 h-8 bg-ink-700 rounded-full flex items-center justify-center text-xs font-display font-bold text-acid">
             {user?.full_name?.charAt(0).toUpperCase()}
           </div>
           <div className="flex-1 min-w-0">
@@ -100,7 +100,7 @@ export default function AppLayout() {
             <div className="w-6 h-6 bg-acid rounded flex items-center justify-center">
               <Zap size={12} className="text-ink-950" fill="currentColor" />
             </div>
-            <span className="font-display font-700 text-white">InvoiceFlow</span>
+            <span className="font-display font-bold text-white">InvoiceFlow</span>
           </div>
         </div>
 

@@ -55,7 +55,7 @@ export default function ClientDetailPage() {
         </button>
         <div className="flex-1">
           <div className="flex items-center gap-3">
-            <h1 className="font-display font-800 text-2xl text-white">{client.name}</h1>
+            <h1 className="font-display font-extrabold text-2xl text-white">{client.name}</h1>
             {!editing
               ? <button onClick={() => setEditing(true)} className="p-1.5 text-ink-400 hover:text-acid hover:bg-ink-800 rounded-lg transition-colors"><Edit size={15} /></button>
               : <div className="flex gap-1">
@@ -83,7 +83,7 @@ export default function ClientDetailPage() {
             ].map(({ label, value, color }) => (
               <div key={label}>
                 <p className="text-xs text-ink-500 mb-1">{label}</p>
-                <p className={`font-700 text-sm ${color}`}>{value}</p>
+                <p className={`font-bold text-sm ${color}`}>{value}</p>
               </div>
             ))}
           </div>

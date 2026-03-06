@@ -35,10 +35,10 @@ export default function RegisterPage() {
           <div className="w-8 h-8 bg-acid rounded-lg flex items-center justify-center">
             <Zap size={14} className="text-ink-950" fill="currentColor" />
           </div>
-          <span className="font-display font-800 text-white text-lg">InvoiceFlow</span>
+          <span className="font-display font-extrabold text-white text-lg">InvoiceFlow</span>
         </div>
 
-        <h2 className="font-display font-800 text-3xl text-white mb-2">Create account</h2>
+        <h2 className="font-display font-extrabold text-3xl text-white mb-2">Create account</h2>
         <p className="text-ink-400 mb-8">Start invoicing in minutes. Free to get started.</p>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
@@ -81,7 +81,7 @@ export default function RegisterPage() {
 
         <p className="text-ink-400 text-sm mt-6 text-center">
           Already have an account?{' '}
-          <Link to="/login" className="text-acid hover:underline font-600">Sign in</Link>
+          <Link to="/login" className="text-acid hover:underline font-semibold">Sign in</Link>
         </p>
       </div>
     </div>

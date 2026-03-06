@@ -46,7 +46,7 @@ export default function InvoicesPage() {
     <div className="p-6 lg:p-8 max-w-7xl mx-auto animate-fade-in">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="font-display font-800 text-2xl text-white">Invoices</h1>
+          <h1 className="font-display font-extrabold text-2xl text-white">Invoices</h1>
           <p className="text-ink-400 text-sm mt-1">{total} invoice{total !== 1 ? 's' : ''} total</p>
         </div>
         <button onClick={() => navigate('/invoices/new')} className="btn-primary flex items-center gap-2 shrink-0">
@@ -103,15 +103,15 @@ export default function InvoicesPage() {
                   {invoices.map(inv => (
                     <tr key={inv.id} className="table-row cursor-pointer"
                       onClick={() => navigate(`/invoices/${inv.id}`)}>
-                      <td className="px-5 py-4 font-mono text-sm text-acid font-500">{inv.invoice_number}</td>
+                      <td className="px-5 py-4 font-mono text-sm text-acid font-medium">{inv.invoice_number}</td>
                       <td className="px-5 py-4">
-                        <p className="text-sm text-white font-500">{inv.client?.name}</p>
+                        <p className="text-sm text-white font-medium">{inv.client?.name}</p>
                         {inv.client?.company && <p className="text-xs text-ink-400">{inv.client.company}</p>}
                       </td>
                       <td className="px-5 py-4 text-sm text-ink-300 whitespace-nowrap">{fmtDate(inv.issue_date)}</td>
                       <td className="px-5 py-4 text-sm text-ink-300 whitespace-nowrap">{fmtDate(inv.due_date)}</td>
                       <td className="px-5 py-4">
-                        <p className="text-sm font-700 text-white whitespace-nowrap">{fmtCurrency(inv.total)}</p>
+                        <p className="text-sm font-bold text-white whitespace-nowrap">{fmtCurrency(inv.total)}</p>
                         {inv.amount_due > 0 && inv.status !== 'paid' && (
                           <p className="text-xs text-coral">Due: {fmtCurrency(inv.amount_due)}</p>
                         )}

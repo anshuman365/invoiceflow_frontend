@@ -65,7 +65,7 @@ export default function DashboardPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="font-display font-800 text-2xl text-white">
+          <h1 className="font-display font-extrabold text-2xl text-white">
             Good {new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 17 ? 'afternoon' : 'evening'},{' '}
             <span className="text-acid">{user?.full_name?.split(' ')[0]}</span> 👋
           </h1>
@@ -101,7 +101,7 @@ export default function DashboardPage() {
               <Icon size={18} className={color} />
             </div>
             <p className="text-xs text-ink-400 font-mono">{label}</p>
-            <p className={`font-display font-800 text-xl ${color} mt-0.5`}>{value}</p>
+            <p className={`font-display font-extrabold text-xl ${color} mt-0.5`}>{value}</p>
           </div>
         ))}
       </div>
@@ -109,7 +109,7 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Revenue Chart */}
         <div className="card p-6 lg:col-span-2">
-          <h3 className="font-display font-700 text-white mb-1">Revenue Overview</h3>
+          <h3 className="font-display font-bold text-white mb-1">Revenue Overview</h3>
           <p className="text-ink-400 text-xs mb-6">Last 12 months</p>
           <ResponsiveContainer width="100%" height={220}>
             <AreaChart data={chart} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
@@ -135,7 +135,7 @@ export default function DashboardPage() {
 
         {/* Status breakdown */}
         <div className="card p-6">
-          <h3 className="font-display font-700 text-white mb-1">Invoice Status</h3>
+          <h3 className="font-display font-bold text-white mb-1">Invoice Status</h3>
           <p className="text-ink-400 text-xs mb-5">All time breakdown</p>
           <div className="flex flex-col gap-3">
             {Object.entries(summary?.status_counts || {}).map(([status, count]) => (
@@ -162,7 +162,7 @@ export default function DashboardPage() {
       {summary?.recent_invoices?.length > 0 && (
         <div className="card mt-6">
           <div className="flex items-center justify-between p-6 pb-0">
-            <h3 className="font-display font-700 text-white">Recent Invoices</h3>
+            <h3 className="font-display font-bold text-white">Recent Invoices</h3>
             <button onClick={() => navigate('/invoices')}
               className="text-acid text-sm hover:underline flex items-center gap-1">
               View all <ArrowRight size={14} />
