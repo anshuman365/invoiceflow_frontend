@@ -1,9 +1,13 @@
 import axios from 'axios'
-import toast from 'react-hot-toast'
+
+// ─── Backend URL ─────────────────────────────────────────────────────────────
+// Cloudflare tunnel URL — change this if backend URL changes
+const BACKEND_URL = 'https://mistress-bedford-terrain-williams.trycloudflare.com'
 
 const api = axios.create({
-  baseURL: '/api/v1',
+  baseURL: `${BACKEND_URL}/api/v1`,
   headers: { 'Content-Type': 'application/json' },
+  withCredentials: false,
 })
 
 // Attach JWT token to every request
@@ -23,7 +27,7 @@ api.interceptors.response.use(
       const refresh = localStorage.getItem('refresh_token')
       if (refresh) {
         try {
-          const { data } = await axios.post('/api/v1/auth/refresh', {}, {
+          const { data } = await axios.post(`${BACKEND_URL}/api/v1/auth/refresh`, {}, {
             headers: { Authorization: `Bearer ${refresh}` }
           })
           localStorage.setItem('access_token', data.access_token)
@@ -42,7 +46,7 @@ api.interceptors.response.use(
   }
 )
 
-// ─── Auth ────────────────────────────────────────────────────
+// ─── Auth ─────────────────────────────────────────────────────────────────────
 export const authAPI = {
   register: (data) => api.post('/auth/register', data),
   login: (data) => api.post('/auth/login', data),
@@ -52,7 +56,7 @@ export const authAPI = {
   changePassword: (data) => api.post('/auth/change-password', data),
 }
 
-// ─── Clients ─────────────────────────────────────────────────
+// ─── Clients ──────────────────────────────────────────────────────────────────
 export const clientsAPI = {
   list: (params) => api.get('/clients/', { params }),
   create: (data) => api.post('/clients/', data),
@@ -62,7 +66,7 @@ export const clientsAPI = {
   invoices: (id) => api.get(`/clients/${id}/invoices`),
 }
 
-// ─── Invoices ─────────────────────────────────────────────────
+// ─── Invoices ─────────────────────────────────────────────────────────────────
 export const invoicesAPI = {
   list: (params) => api.get('/invoices/', { params }),
   create: (data) => api.post('/invoices/', data),
@@ -74,7 +78,7 @@ export const invoicesAPI = {
   downloadPdf: (id) => api.get(`/invoices/${id}/pdf`, { responseType: 'blob' }),
 }
 
-// ─── Payments ─────────────────────────────────────────────────
+// ─── Payments ─────────────────────────────────────────────────────────────────
 export const paymentsAPI = {
   createOrder: (invoiceId) => api.post(`/payments/create-order/${invoiceId}`),
   verify: (data) => api.post('/payments/verify', data),
@@ -82,13 +86,13 @@ export const paymentsAPI = {
   getPayments: (invoiceId) => api.get(`/payments/${invoiceId}`),
 }
 
-// ─── Dashboard ────────────────────────────────────────────────
+// ─── Dashboard ────────────────────────────────────────────────────────────────
 export const dashboardAPI = {
   summary: (period) => api.get('/dashboard/summary', { params: { period } }),
   monthlyChart: () => api.get('/dashboard/chart/monthly'),
 }
 
-// ─── AI ───────────────────────────────────────────────────────
+// ─── AI ───────────────────────────────────────────────────────────────────────
 export const aiAPI = {
   status: () => api.get('/ai/status'),
   generateDescription: (description) => api.post('/ai/generate-description', { description }),
