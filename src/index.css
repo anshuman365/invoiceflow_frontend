@@ -51,7 +51,7 @@
   }
 
   .badge {
-    @apply inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-mono font-500;
+    @apply inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-mono font-medium;
   }
 
   .badge-draft    { @apply bg-ink-700 text-ink-300; }
