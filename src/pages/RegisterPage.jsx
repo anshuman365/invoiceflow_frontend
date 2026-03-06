@@ -18,8 +18,7 @@ export default function RegisterPage() {
     try {
       await register(form)
       toast.success('Account created!')
-      // Small delay to ensure token is stored before navigation triggers API calls
-      setTimeout(() => navigate('/dashboard', { replace: true }), 50)
+      navigate("/dashboard", { replace: true })
     } catch (err) {
       toast.error(err.response?.data?.message || 'Registration failed')
     } finally {

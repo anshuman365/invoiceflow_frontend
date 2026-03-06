@@ -10,17 +10,30 @@ export default function LoginPage() {
   const [form, setForm] = useState({ email: '', password: '' })
   const [showPw, setShowPw] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [debugInfo, setDebugInfo] = useState(null)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
+    setDebugInfo(null)
     try {
-      await login(form.email, form.password)
-      toast.success('Welcome back!')
-      // Small delay to ensure token is stored before navigation triggers API calls
-      setTimeout(() => navigate('/dashboard', { replace: true }), 50)
+      const data = await login(form.email, form.password)
+      setDebugInfo({
+        status: 'SUCCESS',
+        has_token: !!data.access_token,
+        token_preview: data.access_token?.slice(0, 30) + '...',
+        ls_token: localStorage.getItem('access_token')?.slice(0, 30) + '...',
+      })
+      toast.success('Login successful!')
+      navigate('/dashboard', { replace: true })
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Invalid email or password')
+      console.error('Login error:', err)
+      setDebugInfo({
+        status: 'ERROR',
+        message: err.response?.data?.message || err.message,
+        response_data: JSON.stringify(err.response?.data),
+      })
+      toast.error(err.response?.data?.message || 'Login failed')
     } finally {
       setLoading(false)
     }
@@ -28,7 +41,6 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-ink-950 flex">
-      {/* Left decorative panel */}
       <div className="hidden lg:flex flex-col w-1/2 bg-ink-900 border-r border-ink-800 p-12 relative overflow-hidden">
         <div className="absolute inset-0 opacity-5"
           style={{ backgroundImage: 'radial-gradient(circle, #b8ff57 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
@@ -58,7 +70,6 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* Right form panel */}
       <div className="flex-1 flex items-center justify-center p-8">
         <div className="w-full max-w-md animate-fade-up">
           <div className="lg:hidden flex items-center gap-2 mb-8">
@@ -69,6 +80,7 @@ export default function LoginPage() {
           </div>
           <h2 className="font-display font-extrabold text-3xl text-white mb-2">Sign in</h2>
           <p className="text-ink-400 mb-8">Welcome back. Enter your credentials.</p>
+
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">
             <div>
               <label className="label">Email</label>
@@ -93,6 +105,21 @@ export default function LoginPage() {
                 : <> Sign in <ArrowRight size={16} /> </>}
             </button>
           </form>
+
+          {/* DEBUG PANEL — visible on screen so you can see without F12 */}
+          {debugInfo && (
+            <div className={`mt-4 p-4 rounded-xl text-xs font-mono border ${
+              debugInfo.status === 'SUCCESS'
+                ? 'bg-green-900/20 border-green-700/40 text-green-300'
+                : 'bg-red-900/20 border-red-700/40 text-red-300'
+            }`}>
+              <p className="font-bold mb-2">DEBUG: {debugInfo.status}</p>
+              {Object.entries(debugInfo).map(([k, v]) => (
+                <p key={k}><span className="text-ink-400">{k}:</span> {String(v)}</p>
+              ))}
+            </div>
+          )}
+
           <p className="text-ink-400 text-sm mt-6 text-center">
             Don't have an account?{' '}
             <Link to="/register" className="text-acid hover:underline font-semibold">Create one</Link>

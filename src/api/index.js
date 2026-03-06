@@ -2,22 +2,37 @@ import axios from 'axios'
 
 const BACKEND_URL = 'https://mistress-bedford-terrain-williams.trycloudflare.com'
 
+// ─── Token helpers ────────────────────────────────────────────────────────────
+export function setTokens(access, refresh) {
+  localStorage.setItem('access_token', access)
+  localStorage.setItem('refresh_token', refresh)
+  // Set on axios defaults so ALL future requests automatically carry it
+  axios.defaults.headers.common['Authorization'] = `Bearer ${access}`
+  axios.defaults.headers.common['X-Auth-Token'] = access
+}
+
+export function clearTokens() {
+  localStorage.removeItem('access_token')
+  localStorage.removeItem('refresh_token')
+  delete axios.defaults.headers.common['Authorization']
+  delete axios.defaults.headers.common['X-Auth-Token']
+}
+
+export function loadStoredToken() {
+  const token = localStorage.getItem('access_token')
+  if (token) {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+    axios.defaults.headers.common['X-Auth-Token'] = token
+  }
+}
+
+// Load token immediately on app start (before any request fires)
+loadStoredToken()
+
+// ─── Axios instance ───────────────────────────────────────────────────────────
 const api = axios.create({
   baseURL: `${BACKEND_URL}/api/v1`,
   headers: { 'Content-Type': 'application/json' },
-})
-
-// ─── Request interceptor ──────────────────────────────────────────────────────
-// Cloudflare tunnel strips "Authorization" header — so we send token in TWO ways:
-// 1. Standard Authorization header (works when not stripped)
-// 2. X-Auth-Token custom header (our fallback that Cloudflare won't strip)
-api.interceptors.request.use(config => {
-  const token = localStorage.getItem('access_token')
-  if (token) {
-    config.headers['Authorization'] = `Bearer ${token}`
-    config.headers['X-Auth-Token'] = token  // Cloudflare fallback
-  }
-  return config
 })
 
 // ─── Response interceptor — auto refresh on 401 ──────────────────────────────
@@ -33,23 +48,18 @@ api.interceptors.response.use(
           const { data } = await axios.post(
             `${BACKEND_URL}/api/v1/auth/refresh`,
             {},
-            {
-              headers: {
-                'Authorization': `Bearer ${refresh}`,
-                'X-Auth-Token': refresh,
-              }
-            }
+            { headers: { 'Authorization': `Bearer ${refresh}`, 'X-Auth-Token': refresh } }
           )
-          localStorage.setItem('access_token', data.access_token)
+          setTokens(data.access_token, refresh)
           original.headers['Authorization'] = `Bearer ${data.access_token}`
           original.headers['X-Auth-Token'] = data.access_token
           return api(original)
         } catch {
-          localStorage.clear()
+          clearTokens()
           window.location.href = '/login'
         }
       } else {
-        localStorage.clear()
+        clearTokens()
         window.location.href = '/login'
       }
     }
@@ -69,24 +79,24 @@ export const authAPI = {
 
 // ─── Clients ──────────────────────────────────────────────────────────────────
 export const clientsAPI = {
-  list:     (params) => api.get('/clients/', { params }),
-  create:   (data)   => api.post('/clients/', data),
-  get:      (id)     => api.get(`/clients/${id}`),
+  list:     (params)   => api.get('/clients/', { params }),
+  create:   (data)     => api.post('/clients/', data),
+  get:      (id)       => api.get(`/clients/${id}`),
   update:   (id, data) => api.put(`/clients/${id}`, data),
-  delete:   (id)     => api.delete(`/clients/${id}`),
-  invoices: (id)     => api.get(`/clients/${id}/invoices`),
+  delete:   (id)       => api.delete(`/clients/${id}`),
+  invoices: (id)       => api.get(`/clients/${id}/invoices`),
 }
 
 // ─── Invoices ─────────────────────────────────────────────────────────────────
 export const invoicesAPI = {
-  list:        (params) => api.get('/invoices/', { params }),
-  create:      (data)   => api.post('/invoices/', data),
-  get:         (id)     => api.get(`/invoices/${id}`),
+  list:        (params)   => api.get('/invoices/', { params }),
+  create:      (data)     => api.post('/invoices/', data),
+  get:         (id)       => api.get(`/invoices/${id}`),
   update:      (id, data) => api.put(`/invoices/${id}`, data),
-  delete:      (id)     => api.delete(`/invoices/${id}`),
-  send:        (id)     => api.post(`/invoices/${id}/send`),
-  duplicate:   (id)     => api.post(`/invoices/${id}/duplicate`),
-  downloadPdf: (id)     => api.get(`/invoices/${id}/pdf`, { responseType: 'blob' }),
+  delete:      (id)       => api.delete(`/invoices/${id}`),
+  send:        (id)       => api.post(`/invoices/${id}/send`),
+  duplicate:   (id)       => api.post(`/invoices/${id}/duplicate`),
+  downloadPdf: (id)       => api.get(`/invoices/${id}/pdf`, { responseType: 'blob' }),
 }
 
 // ─── Payments ─────────────────────────────────────────────────────────────────
@@ -105,10 +115,10 @@ export const dashboardAPI = {
 
 // ─── AI ───────────────────────────────────────────────────────────────────────
 export const aiAPI = {
-  status:              ()            => api.get('/ai/status'),
-  generateDescription: (description) => api.post('/ai/generate-description', { description }),
-  paymentReminder:     (id, tone)    => api.post(`/ai/payment-reminder/${id}`, { tone }),
-  invoiceSummary:      (id)          => api.get(`/ai/invoice-summary/${id}`),
+  status:              ()             => api.get('/ai/status'),
+  generateDescription: (description)  => api.post('/ai/generate-description', { description }),
+  paymentReminder:     (id, tone)     => api.post(`/ai/payment-reminder/${id}`, { tone }),
+  invoiceSummary:      (id)           => api.get(`/ai/invoice-summary/${id}`),
 }
 
 export default api
