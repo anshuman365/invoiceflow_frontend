@@ -1,12 +1,13 @@
 import axios from 'axios'
 
-const BACKEND_URL = 'https://mistress-bedford-terrain-williams.trycloudflare.com'
+// Use environment variable for backend URL (set in Render: VITE_API_URL)
+const BACKEND_URL = import.meta.env.VITE_API_URL || 'https://mistress-bedford-terrain-williams.trycloudflare.com'
 
 // ─── Token helpers ────────────────────────────────────────────────────────────
 export function setTokens(access, refresh) {
   localStorage.setItem('access_token', access)
   localStorage.setItem('refresh_token', refresh)
-  // Set on axios defaults so ALL future requests automatically carry it
+  // Also set on axios defaults for global axios (used in refresh)
   axios.defaults.headers.common['Authorization'] = `Bearer ${access}`
   axios.defaults.headers.common['X-Auth-Token'] = access
 }
@@ -26,24 +27,26 @@ export function loadStoredToken() {
   }
 }
 
-// Load token immediately on app start (before any request fires)
+// Load token immediately on app start
 loadStoredToken()
 
 // ─── Axios instance ───────────────────────────────────────────────────────────
 const api = axios.create({
   baseURL: `${BACKEND_URL}/api/v1`,
   headers: { 'Content-Type': 'application/json' },
-});
+})
 
 // ✅ Request interceptor to attach token from localStorage
 api.interceptors.request.use(config => {
-  const token = localStorage.getItem('access_token');
+  const token = localStorage.getItem('access_token')
   if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-    config.headers['X-Auth-Token'] = token; // if your backend expects this
+    config.headers.Authorization = `Bearer ${token}`
+    config.headers['X-Auth-Token'] = token
   }
-  return config;
-});
+  // Log request for debugging (remove in production)
+  console.log(`[API] ${config.method.toUpperCase()} ${config.baseURL}${config.url}`, config.headers)
+  return config
+})
 
 // ─── Response interceptor — auto refresh on 401 ──────────────────────────────
 api.interceptors.response.use(
@@ -55,16 +58,18 @@ api.interceptors.response.use(
       const refresh = localStorage.getItem('refresh_token')
       if (refresh) {
         try {
+          console.log('[API] Refreshing token...')
           const { data } = await axios.post(
             `${BACKEND_URL}/api/v1/auth/refresh`,
             {},
-            { headers: { 'Authorization': `Bearer ${refresh}`, 'X-Auth-Token': refresh } }
+            { headers: { Authorization: `Bearer ${refresh}`, 'X-Auth-Token': refresh } }
           )
           setTokens(data.access_token, refresh)
-          original.headers['Authorization'] = `Bearer ${data.access_token}`
+          original.headers.Authorization = `Bearer ${data.access_token}`
           original.headers['X-Auth-Token'] = data.access_token
           return api(original)
-        } catch {
+        } catch (refreshErr) {
+          console.error('[API] Refresh failed', refreshErr)
           clearTokens()
           window.location.href = '/login'
         }
